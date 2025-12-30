@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sites     Site[]
+  users     UserOrganization[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orgs      UserOrganization[]
+}
+
+model UserOrganization {
+  userId         String
+  organizationId String
+  role           OrgRole @default(VIEWER)
+  createdAt      DateTime @default(now())
+
+  user          User         @relation(fields: [userId], references: [id])
+  organization  Organization @relation(fields: [organizationId], references: [id])
+
+  @@id([userId, organizationId])
+}
+
+model Site {
+  id             String   @id @default(uuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  url            String
+  label          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  pages          Page[]
+  scans          Scan[]
+}
+
+model Page {
+  id        String   @id @default(uuid())
+  site      Site     @relation(fields: [siteId], references: [id])
+  siteId    String
+  url       String
+  lastScan  Scan?    @relation("PageLastScan", fields: [lastScanId], references: [id])
+  lastScanId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  issues    Issue[]
+}
+
+model Scan {
+  id           String    @id @default(uuid())
+  site         Site      @relation(fields: [siteId], references: [id])
+  siteId       String
+  status       ScanStatus @default(PENDING)
+  startedAt    DateTime   @default(now())
+  completedAt  DateTime?
+  pageCount    Int        @default(0)
+  riskScore    Float?     // aggregate risk score 0-100
+  notes        String?
+  pages        Page[]     @relation("PageLastScan")
+  issues       Issue[]
+}
+
+model Issue {
+  id            String    @id @default(uuid())
+  scan          Scan      @relation(fields: [scanId], references: [id])
+  scanId        String
+  page          Page      @relation(fields: [pageId], references: [id])
+  pageId        String
+  wcag          WcagCriterion @relation(fields: [wcagId], references: [id])
+  wcagId        String
+  severity      IssueSeverity
+  confidence    Float?
+  needsReview   Boolean   @default(false)
+  title         String
+  description   String
+  recommendation String
+  selector      String?
+  snippet       String?
+  screenshotKey String?
+  htmlKey       String?
+  createdAt     DateTime  @default(now())
+}
+
+model WcagCriterion {
+  id        String   @id // e.g., 1.4.3
+  title     String
+  level     String   // A | AA | AAA
+  principle String   // Perceivable, Operable, Understandable, Robust
+  description String?
+  issues    Issue[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum OrgRole {
+  ADMIN
+  AUDITOR
+  VIEWER
+}
+
+enum ScanStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum IssueSeverity {
+  LEGAL
+  USABILITY
+  BEST_PRACTICE
+}
+

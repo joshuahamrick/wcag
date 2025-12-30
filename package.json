@@ -1,0 +1,28 @@
+{
+  "name": "wcag",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WCAG compliance intelligence platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "turbo lint",
+    "dev:web": "turbo dev --filter=web",
+    "dev:api": "turbo dev --filter=api",
+    "build": "turbo build",
+    "format": "prettier --write ."
+  },
+  "keywords": ["wcag", "accessibility", "compliance"],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "npm@10.9.3",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "eslint": "^8.57.1",
+    "prettier": "^3.7.4",
+    "turbo": "^2.7.2",
+    "typescript": "^5.9.3"
+  }
+}
