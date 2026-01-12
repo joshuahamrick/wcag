@@ -66,14 +66,24 @@ export async function enqueueScan(
 ) {
   if (useDirect) {
     logger.info({ siteUrl }, 'Using inline scan (memory mode)');
-    return executeScan(scanId, siteUrl, { maxPages, stateCode, businessType });
+    // Fire and forget - don't await, let it run in background
+    executeScan(scanId, siteUrl, { maxPages, stateCode, businessType }).catch(err => {
+      logger.error({ err, scanId }, 'Background scan failed');
+      setStatus(scanId, 'failed');
+    });
+    return;
   }
 
   await initRedis();
 
   if (!scanQueue) {
     logger.warn({ siteUrl }, 'Queue unavailable; executing scan inline');
-    return executeScan(scanId, siteUrl, { maxPages, stateCode, businessType });
+    // Fire and forget
+    executeScan(scanId, siteUrl, { maxPages, stateCode, businessType }).catch(err => {
+      logger.error({ err, scanId }, 'Background scan failed');
+      setStatus(scanId, 'failed');
+    });
+    return;
   }
 
   await scanQueue.add('scan', { scanId, siteUrl, maxPages, stateCode, businessType }, { attempts: 2, backoff: 5000 });
