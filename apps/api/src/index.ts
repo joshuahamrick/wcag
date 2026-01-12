@@ -77,8 +77,9 @@ async function buildServer() {
 
 async function start() {
   const app = await buildServer();
-  await app.listen({ port: env.API_PORT, host: env.API_HOST });
-  logger.info(`API listening on http://${env.API_HOST}:${env.API_PORT}`);
+  const port = env.PORT ?? env.API_PORT;
+  await app.listen({ port, host: env.API_HOST });
+  logger.info(`API listening on http://${env.API_HOST}:${port}`);
 
   const shutdown = async () => {
     logger.info('Shutting down API');
