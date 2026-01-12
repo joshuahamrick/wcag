@@ -1,23 +1,41 @@
-import Anthropic from '@anthropic-ai/sdk';
 import { env } from './config.js';
 import { AutomatedFinding, AIInterpretation, IssueRecord, IssueSeverity } from './types.js';
 import { logger } from './logger.js';
 
-const client = env.ANTHROPIC_API_KEY
-  ? new Anthropic({ apiKey: env.ANTHROPIC_API_KEY })
-  : undefined;
+// Lazy-load Anthropic SDK to reduce startup memory
+let client: any = null;
+let clientInitialized = false;
 
-if (!client) {
-  logger.warn('ANTHROPIC_API_KEY not set; using fallback (non-AI) interpretations');
-} else {
-  logger.info({ model: env.CLAUDE_MODEL }, 'AI interpretations enabled (Claude)');
+async function getClient() {
+  if (clientInitialized) return client;
+  clientInitialized = true;
+
+  if (!env.ANTHROPIC_API_KEY) {
+    logger.warn('ANTHROPIC_API_KEY not set; using fallback (non-AI) interpretations');
+    return null;
+  }
+
+  try {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default;
+    client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+    logger.info({ model: env.CLAUDE_MODEL }, 'AI client initialized');
+    return client;
+  } catch (err) {
+    logger.error({ err }, 'Failed to initialize Anthropic SDK');
+    return null;
+  }
 }
 
-const interpretationTool: Anthropic.Tool = {
+// Log AI status at startup
+if (env.ANTHROPIC_API_KEY) {
+  logger.info('AI interpretations enabled (Claude)');
+}
+
+const interpretationTool = {
   name: 'submit_interpretation',
   description: 'Submit the structured accessibility interpretation',
   input_schema: {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       title: {
         type: 'string',
@@ -85,12 +103,13 @@ async function interpretWithFallback(
   finding: AutomatedFinding,
   pageUrl: string
 ): Promise<AIInterpretation> {
-  if (!client) {
+  const aiClient = await getClient();
+  if (!aiClient) {
     return fallbackInterpretation(finding);
   }
 
   try {
-    const response = await client.messages.create({
+    const response = await aiClient.messages.create({
       model: env.CLAUDE_MODEL,
       max_tokens: env.CLAUDE_MAX_TOKENS,
       tools: [interpretationTool],
@@ -105,7 +124,7 @@ async function interpretWithFallback(
 
     // Extract tool use result
     const toolUse = response.content.find(
-      (block): block is Anthropic.ToolUseBlock => block.type === 'tool_use'
+      (block: any) => block.type === 'tool_use'
     );
 
     if (toolUse && toolUse.name === 'submit_interpretation') {
