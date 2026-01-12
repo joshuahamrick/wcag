@@ -1,7 +1,16 @@
-import { chromium, Page } from 'playwright';
+import type { Page } from 'playwright';
 import { PageSnapshot } from './types.js';
 import { logger } from './logger.js';
 import { env } from './config.js';
+
+// Lazy-load playwright to reduce startup memory
+let playwrightModule: typeof import('playwright') | null = null;
+async function getPlaywright() {
+  if (!playwrightModule) {
+    playwrightModule = await import('playwright');
+  }
+  return playwrightModule;
+}
 
 interface CrawlOptions {
   maxPages?: number;
@@ -49,6 +58,7 @@ export async function crawlSite(
   const maxPages = options.maxPages ?? 5;
   const pageLoadTimeoutMs = options.pageLoadTimeoutMs ?? env.PAGE_LOAD_TIMEOUT_MS;
   const retryCount = options.retryCount ?? env.PAGE_RETRY_COUNT;
+  const { chromium } = await getPlaywright();
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const visited = new Set<string>();

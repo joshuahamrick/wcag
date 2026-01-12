@@ -15,8 +15,8 @@ COPY apps/api/tsconfig.json ./
 # Build TypeScript
 RUN npm run build
 
-# Expose port
-EXPOSE 4000
+# Railway sets PORT dynamically, commonly 8080
+EXPOSE 8080
 
 # Start the app
 CMD ["node", "dist/index.js"]

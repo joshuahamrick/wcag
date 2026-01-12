@@ -1,9 +1,32 @@
 import { createHash } from 'node:crypto';
-import AxeBuilder from '@axe-core/playwright';
-import pa11y from 'pa11y';
-import { chromium } from 'playwright';
 import { AutomatedFinding, PageSnapshot } from './types.js';
 import { logger } from './logger.js';
+
+// Lazy-load heavy dependencies to reduce startup memory
+let playwrightModule: typeof import('playwright') | null = null;
+let axeBuilderModule: typeof import('@axe-core/playwright') | null = null;
+let pa11yModule: typeof import('pa11y') | null = null;
+
+async function getPlaywright() {
+  if (!playwrightModule) {
+    playwrightModule = await import('playwright');
+  }
+  return playwrightModule;
+}
+
+async function getAxeBuilder() {
+  if (!axeBuilderModule) {
+    axeBuilderModule = await import('@axe-core/playwright');
+  }
+  return axeBuilderModule.default;
+}
+
+async function getPa11y() {
+  if (!pa11yModule) {
+    pa11yModule = await import('pa11y');
+  }
+  return pa11yModule.default;
+}
 
 function generateStableFindingId(source: string, finding: Omit<AutomatedFinding, 'id'>): string {
   const content = [source, finding.wcagId, finding.selector, finding.description].filter(Boolean).join('|');
@@ -42,6 +65,9 @@ function sortFindings(findings: AutomatedFinding[]): AutomatedFinding[] {
 export async function runAutomatedChecks(
   snapshots: PageSnapshot[]
 ): Promise<Map<string, AutomatedFinding[]>> {
+  const { chromium } = await getPlaywright();
+  const AxeBuilder = await getAxeBuilder();
+  const pa11y = await getPa11y();
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const findingsByUrl = new Map<string, AutomatedFinding[]>();
@@ -82,6 +108,7 @@ export async function runAutomatedChecks(
 
 async function runPa11y(url: string): Promise<AutomatedFinding[]> {
   try {
+    const pa11y = await getPa11y();
     const results = await pa11y(url, {
       standard: 'WCAG2AA',
       log: {
