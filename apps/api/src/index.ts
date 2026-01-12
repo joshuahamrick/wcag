@@ -6,7 +6,6 @@ import scanRoutes from './routes/scan.js';
 import { logger } from './logger.js';
 import { getDbHealthStatus } from './persistence.js';
 import { getQueueHealthStatus } from './queue.js';
-import './queue.js';
 
 function getCorsOrigin(): boolean | string | string[] {
   const origin = env.ALLOWED_ORIGIN;
