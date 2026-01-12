@@ -1,4 +1,7 @@
-FROM mcr.microsoft.com/playwright:v1.49.1-noble
+FROM node:20-bookworm
+
+# Install Playwright system dependencies
+RUN npx playwright install-deps chromium
 
 WORKDIR /app
 
@@ -7,6 +10,9 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install --production=false
+
+# Install Playwright browsers (matching the installed version)
+RUN npx playwright install chromium
 
 # Copy source
 COPY src ./src
