@@ -77,17 +77,33 @@ async function buildServer() {
 async function start() {
   const app = await buildServer();
   const port = env.PORT ?? env.API_PORT;
+
+  // Log memory usage at startup
+  const mem = process.memoryUsage();
+  logger.info({
+    heapUsed: Math.round(mem.heapUsed / 1024 / 1024) + 'MB',
+    heapTotal: Math.round(mem.heapTotal / 1024 / 1024) + 'MB',
+    rss: Math.round(mem.rss / 1024 / 1024) + 'MB'
+  }, 'Memory usage at startup');
+
   await app.listen({ port, host: env.API_HOST });
   logger.info(`API listening on http://${env.API_HOST}:${port}`);
 
-  const shutdown = async () => {
-    logger.info('Shutting down API');
+  const shutdown = async (signal: string) => {
+    logger.info({ signal }, 'Received shutdown signal');
     await app.close();
     process.exit(0);
   };
 
-  process.on('SIGINT', shutdown);
-  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('uncaughtException', (err) => {
+    logger.error({ err }, 'Uncaught exception');
+    process.exit(1);
+  });
+  process.on('unhandledRejection', (err) => {
+    logger.error({ err }, 'Unhandled rejection');
+  });
 }
 
 start().catch((err) => {
