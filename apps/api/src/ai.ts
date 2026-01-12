@@ -1,10 +1,53 @@
-import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 import { env } from './config.js';
 import { AutomatedFinding, AIInterpretation, IssueRecord, IssueSeverity } from './types.js';
+import { logger } from './logger.js';
 
-const client = env.OPENAI_API_KEY
-  ? new OpenAI({ apiKey: env.OPENAI_API_KEY })
+const client = env.ANTHROPIC_API_KEY
+  ? new Anthropic({ apiKey: env.ANTHROPIC_API_KEY })
   : undefined;
+
+if (!client) {
+  logger.warn('ANTHROPIC_API_KEY not set; using fallback (non-AI) interpretations');
+} else {
+  logger.info({ model: env.CLAUDE_MODEL }, 'AI interpretations enabled (Claude)');
+}
+
+const interpretationTool: Anthropic.Tool = {
+  name: 'submit_interpretation',
+  description: 'Submit the structured accessibility interpretation',
+  input_schema: {
+    type: 'object',
+    properties: {
+      title: {
+        type: 'string',
+        description: 'A concise title for the accessibility issue'
+      },
+      explanation: {
+        type: 'string',
+        description: 'Plain-language explanation of the issue and its impact on users'
+      },
+      recommendation: {
+        type: 'string',
+        description: 'Specific, actionable fix for the issue'
+      },
+      risk: {
+        type: 'string',
+        enum: ['LEGAL', 'USABILITY', 'BEST_PRACTICE'],
+        description: 'Risk level: LEGAL for ADA/WCAG violations, USABILITY for user experience issues, BEST_PRACTICE for minor improvements'
+      },
+      confidence: {
+        type: 'number',
+        description: 'Confidence score from 0 to 1'
+      },
+      needsReview: {
+        type: 'boolean',
+        description: 'Whether a human should review this interpretation'
+      }
+    },
+    required: ['title', 'explanation', 'recommendation', 'risk', 'confidence', 'needsReview']
+  }
+};
 
 export async function interpretFindings(
   siteUrl: string,
@@ -46,16 +89,40 @@ async function interpretWithFallback(
     return fallbackInterpretation(finding);
   }
 
-  const prompt = buildPrompt(finding, pageUrl);
   try {
-    const response = await client.responses.create({
-      model: 'gpt-4.1-mini',
-      input: prompt
+    const response = await client.messages.create({
+      model: env.CLAUDE_MODEL,
+      max_tokens: env.CLAUDE_MAX_TOKENS,
+      tools: [interpretationTool],
+      tool_choice: { type: 'tool', name: 'submit_interpretation' },
+      messages: [
+        {
+          role: 'user',
+          content: buildPrompt(finding, pageUrl)
+        }
+      ]
     });
-    const text = response.output_text ?? '';
-    const parsed = parseStructured(text) ?? fallbackInterpretation(finding);
-    return parsed;
-  } catch {
+
+    // Extract tool use result
+    const toolUse = response.content.find(
+      (block): block is Anthropic.ToolUseBlock => block.type === 'tool_use'
+    );
+
+    if (toolUse && toolUse.name === 'submit_interpretation') {
+      const input = toolUse.input as Record<string, unknown>;
+      return {
+        title: String(input.title ?? 'Accessibility issue'),
+        explanation: String(input.explanation ?? ''),
+        recommendation: String(input.recommendation ?? ''),
+        risk: (input.risk as IssueSeverity) ?? 'USABILITY',
+        confidence: typeof input.confidence === 'number' ? input.confidence : 0.5,
+        needsReview: Boolean(input.needsReview)
+      };
+    }
+
+    return fallbackInterpretation(finding);
+  } catch (err) {
+    logger.warn({ err }, 'AI interpretation failed; falling back to heuristic interpretation');
     return fallbackInterpretation(finding);
   }
 }
@@ -81,32 +148,17 @@ function guessSeverity(finding: AutomatedFinding): IssueSeverity {
 }
 
 function buildPrompt(finding: AutomatedFinding, pageUrl: string): string {
-  return `
-You are an accessibility auditor. Given an automated finding, classify risk and rewrite plainly.
+  return `You are an accessibility auditor. Analyze this automated finding and provide a structured interpretation.
+
+Be concrete, non-alarmist, and actionable. Prefer specific fixes over generic advice.
+If the WCAG mapping is unclear from the data, keep WCAG references general and set needsReview=true.
 
 Page: ${pageUrl}
 Description: ${finding.description}
 WCAG: ${finding.wcagId ?? 'unknown'}
+Impact: ${finding.impact ?? 'unknown'}
 Selector: ${finding.selector ?? 'n/a'}
 Snippet: ${finding.snippet ?? 'n/a'}
 
-Respond as JSON with: { "title": "...", "explanation": "...", "recommendation": "...", "risk": "LEGAL|USABILITY|BEST_PRACTICE", "confidence": 0-1, "needsReview": true|false }`;
+Use the submit_interpretation tool to provide your analysis.`;
 }
-
-function parseStructured(text: string): AIInterpretation | null {
-  try {
-    const obj = JSON.parse(text);
-    if (!obj) return null;
-    return {
-      title: obj.title ?? 'Accessibility issue',
-      explanation: obj.explanation ?? '',
-      recommendation: obj.recommendation ?? '',
-      risk: obj.risk ?? 'USABILITY',
-      confidence: typeof obj.confidence === 'number' ? obj.confidence : 0.5,
-      needsReview: Boolean(obj.needsReview)
-    } as AIInterpretation;
-  } catch {
-    return null;
-  }
-}
-

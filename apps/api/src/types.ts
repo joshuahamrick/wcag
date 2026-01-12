@@ -2,6 +2,24 @@ export type ScanStatus = 'pending' | 'running' | 'completed' | 'failed';
 
 export type IssueSeverity = 'LEGAL' | 'USABILITY' | 'BEST_PRACTICE';
 
+export type BusinessType = 'government' | 'publicAccommodation' | 'education' | 'healthcare' | 'financial' | 'other';
+
+export interface StateComplianceInfo {
+  stateCode: string;
+  stateName: string;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  estimatedExposure: string;
+  demandLetterLikelihood: 'low' | 'medium' | 'high';
+  applicableLaws: {
+    code: string;
+    name: string;
+    description: string;
+    privateRightOfAction: boolean;
+    penalties: string;
+  }[];
+  priorityRemediations: string[];
+}
+
 export interface PageSnapshot {
   url: string;
   html: string;
@@ -54,5 +72,17 @@ export interface ScanResult {
   completedAt?: Date;
   pageCount: number;
   riskScore?: number;
+  errorMessage?: string;
+  // State-specific compliance
+  stateCode?: string;
+  businessType?: BusinessType;
+  stateCompliance?: StateComplianceInfo;
+}
+
+export interface ScanRequest {
+  url: string;
+  maxPages?: number;
+  stateCode?: string;
+  businessType?: BusinessType;
 }
 

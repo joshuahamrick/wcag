@@ -40,28 +40,44 @@ export async function storeSnapshots(
     let htmlKey: string | undefined;
 
     if (snapshot.screenshotBase64) {
-      const buf = Buffer.from(snapshot.screenshotBase64, 'base64');
-      screenshotKey = `${baseKey}.png`;
-      await client.send(
-        new PutObjectCommand({
-          Bucket: env.S3_BUCKET,
-          Key: screenshotKey,
-          Body: buf,
-          ContentType: 'image/png'
-        })
-      );
+      try {
+        const buf = Buffer.from(snapshot.screenshotBase64, 'base64');
+        screenshotKey = `${baseKey}.png`;
+        await client.send(
+          new PutObjectCommand({
+            Bucket: env.S3_BUCKET,
+            Key: screenshotKey,
+            Body: buf,
+            ContentType: 'image/png'
+          })
+        );
+      } catch (err) {
+        logger.warn(
+          { err, bucket: env.S3_BUCKET, key: `${baseKey}.png`, endpoint: env.S3_ENDPOINT },
+          'failed to upload screenshot; continuing without S3 evidence'
+        );
+        screenshotKey = undefined;
+      }
     }
 
     if (snapshot.html) {
-      htmlKey = `${baseKey}.html`;
-      await client.send(
-        new PutObjectCommand({
-          Bucket: env.S3_BUCKET,
-          Key: htmlKey,
-          Body: snapshot.html,
-          ContentType: 'text/html; charset=utf-8'
-        })
-      );
+      try {
+        htmlKey = `${baseKey}.html`;
+        await client.send(
+          new PutObjectCommand({
+            Bucket: env.S3_BUCKET,
+            Key: htmlKey,
+            Body: snapshot.html,
+            ContentType: 'text/html; charset=utf-8'
+          })
+        );
+      } catch (err) {
+        logger.warn(
+          { err, bucket: env.S3_BUCKET, key: `${baseKey}.html`, endpoint: env.S3_ENDPOINT },
+          'failed to upload HTML snapshot; continuing without S3 evidence'
+        );
+        htmlKey = undefined;
+      }
     }
 
     map.set(snapshot.url, { screenshotKey, htmlKey });

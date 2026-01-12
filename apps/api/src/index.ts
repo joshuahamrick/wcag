@@ -4,7 +4,37 @@ import rateLimit from '@fastify/rate-limit';
 import { env } from './config.js';
 import scanRoutes from './routes/scan.js';
 import { logger } from './logger.js';
+import { getDbHealthStatus } from './persistence.js';
+import { getQueueHealthStatus } from './queue.js';
 import './queue.js';
+
+function getCorsOrigin(): boolean | string | string[] {
+  const origin = env.ALLOWED_ORIGIN;
+  if (!origin) {
+    if (env.NODE_ENV === 'production') {
+      logger.warn('ALLOWED_ORIGIN not set in production; CORS will reject cross-origin requests');
+      return false;
+    }
+    return true; // Allow all origins in development
+  }
+  if (origin === '*') return true;
+  // Support comma-separated list of origins
+  if (origin.includes(',')) return origin.split(',').map((o) => o.trim());
+  return origin;
+}
+
+function getRateLimitAllowList(): string[] {
+  const allowList = env.RATE_LIMIT_ALLOW_LIST;
+  if (allowList) {
+    return allowList.split(',').map((ip) => ip.trim());
+  }
+  // In development, allow localhost to bypass rate limiting
+  if (env.NODE_ENV === 'development') {
+    return ['127.0.0.1', '::1'];
+  }
+  // In production, no bypass by default
+  return [];
+}
 
 async function buildServer() {
   const app = Fastify({
@@ -13,17 +43,33 @@ async function buildServer() {
     connectionTimeout: env.SCAN_TIMEOUT_MS
   });
 
-  await app.register(cors, { origin: env.ALLOWED_ORIGIN ?? true });
+  const corsOrigin = getCorsOrigin();
+  await app.register(cors, { origin: corsOrigin });
+
+  const rateLimitAllowList = getRateLimitAllowList();
   await app.register(rateLimit, {
     max: env.RATE_LIMIT_MAX,
     timeWindow: env.RATE_LIMIT_WINDOW,
-    allowList: ['127.0.0.1']
+    allowList: rateLimitAllowList
   });
 
-  app.get('/health', async () => ({
-    status: 'ok',
-    env: env.NODE_ENV
-  }));
+  logger.info(
+    { corsOrigin: typeof corsOrigin === 'boolean' ? (corsOrigin ? '*' : 'none') : corsOrigin, rateLimitAllowList },
+    'Security configuration'
+  );
+
+  app.get('/health', async () => {
+    const db = getDbHealthStatus();
+    const queue = getQueueHealthStatus();
+    return {
+      status: 'ok',
+      env: env.NODE_ENV,
+      components: {
+        database: db.healthy ? 'healthy' : 'unhealthy',
+        queue: queue.mode
+      }
+    };
+  });
 
   await app.register(scanRoutes, { prefix: '/api' });
   return app;

@@ -1,10 +1,45 @@
-import { chromium } from 'playwright';
+import { chromium, Page } from 'playwright';
 import { PageSnapshot } from './types.js';
 import { logger } from './logger.js';
+import { env } from './config.js';
 
 interface CrawlOptions {
   maxPages?: number;
   sameOriginOnly?: boolean;
+  pageLoadTimeoutMs?: number;
+  retryCount?: number;
+}
+
+async function loadPageWithRetry(
+  page: Page,
+  url: string,
+  timeoutMs: number,
+  maxRetries: number
+): Promise<boolean> {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      // Use 'domcontentloaded' with timeout instead of 'networkidle' to avoid hanging on chatty pages
+      await page.goto(url, {
+        waitUntil: 'domcontentloaded',
+        timeout: timeoutMs
+      });
+      // Brief additional wait for JS-rendered content, but with a hard cap
+      await page.waitForLoadState('load', { timeout: Math.min(timeoutMs / 2, 5000) }).catch(() => {
+        // Ignore load state timeout - domcontentloaded is sufficient
+      });
+      return true;
+    } catch (err) {
+      const isLastAttempt = attempt === maxRetries;
+      logger.warn(
+        { err, url, attempt, maxRetries },
+        isLastAttempt ? 'page load failed after all retries' : 'page load failed, retrying'
+      );
+      if (isLastAttempt) return false;
+      // Brief delay before retry
+      await new Promise((r) => setTimeout(r, 500 * attempt));
+    }
+  }
+  return false;
 }
 
 export async function crawlSite(
@@ -12,6 +47,8 @@ export async function crawlSite(
   options: CrawlOptions = {}
 ): Promise<PageSnapshot[]> {
   const maxPages = options.maxPages ?? 5;
+  const pageLoadTimeoutMs = options.pageLoadTimeoutMs ?? env.PAGE_LOAD_TIMEOUT_MS;
+  const retryCount = options.retryCount ?? env.PAGE_RETRY_COUNT;
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const visited = new Set<string>();
@@ -28,9 +65,14 @@ export async function crawlSite(
       const page = await context.newPage();
       logger.debug({ url }, 'crawling page');
       try {
-        await page.goto(url, { waitUntil: 'networkidle' });
+        const loaded = await loadPageWithRetry(page, url, pageLoadTimeoutMs, retryCount);
+        if (!loaded) {
+          logger.warn({ url }, 'skipping page after failed retries');
+          continue;
+        }
+
         const html = await page.content();
-        const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
+        const screenshot = await page.screenshot({ fullPage: true, type: 'png', timeout: 10000 });
 
         snapshots.push({
           url,

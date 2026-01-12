@@ -13,7 +13,7 @@ See `config/env.example` for the full list. Key runtime values:
 - `API_BODY_LIMIT=65536`
 - `REDIS_URL=redis://<redis-host>:6379`
 - `DATABASE_URL=postgresql://user:pass@host:5432/wcag`
-- `OPENAI_API_KEY=<optional for richer interpretations>`
+- `ANTHROPIC_API_KEY=<optional for richer AI interpretations via Claude>`
 - `S3_ENDPOINT=https://s3.amazonaws.com` (or your S3-compatible endpoint)
 - `S3_REGION=us-east-1`
 - `S3_ACCESS_KEY_ID=<key>`
@@ -36,7 +36,7 @@ See `config/env.example` for the full list. Key runtime values:
 
 ## ECS/Fargate (API)
 1) Build image from `apps/api`:
-   - `docker build -t wcag-api -f apps/api/Dockerfile .` (Dockerfile to be added).
+   - `docker build -t wcag-api -f apps/api/Dockerfile .`
 2) Run task definition with:
    - Env vars above.
    - CPU/memory sized for Playwright + node (e.g., 1 vCPU / 2GB+).

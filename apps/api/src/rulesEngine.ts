@@ -1,8 +1,43 @@
+import { createHash } from 'node:crypto';
 import AxeBuilder from '@axe-core/playwright';
 import pa11y from 'pa11y';
 import { chromium } from 'playwright';
 import { AutomatedFinding, PageSnapshot } from './types.js';
 import { logger } from './logger.js';
+
+function generateStableFindingId(source: string, finding: Omit<AutomatedFinding, 'id'>): string {
+  const content = [source, finding.wcagId, finding.selector, finding.description].filter(Boolean).join('|');
+  const hash = createHash('sha256').update(content).digest('hex').slice(0, 12);
+  return `${source}-${hash}`;
+}
+
+function deduplicateFindings(findings: AutomatedFinding[]): AutomatedFinding[] {
+  const seen = new Set<string>();
+  const deduped: AutomatedFinding[] = [];
+  for (const finding of findings) {
+    const key = [finding.wcagId, finding.selector, finding.description].filter(Boolean).join('|');
+    if (!seen.has(key)) {
+      seen.add(key);
+      deduped.push(finding);
+    }
+  }
+  return deduped;
+}
+
+function sortFindings(findings: AutomatedFinding[]): AutomatedFinding[] {
+  return findings.slice().sort((a, b) => {
+    // Sort by impact severity first (critical > serious > moderate > minor)
+    const impactOrder: Record<string, number> = { critical: 0, serious: 1, moderate: 2, minor: 3 };
+    const aImpact = impactOrder[a.impact?.toLowerCase() ?? ''] ?? 4;
+    const bImpact = impactOrder[b.impact?.toLowerCase() ?? ''] ?? 4;
+    if (aImpact !== bImpact) return aImpact - bImpact;
+    // Then by wcagId
+    const wcagCompare = (a.wcagId ?? '').localeCompare(b.wcagId ?? '');
+    if (wcagCompare !== 0) return wcagCompare;
+    // Then by selector for stable ordering
+    return (a.selector ?? '').localeCompare(b.selector ?? '');
+  });
+}
 
 export async function runAutomatedChecks(
   snapshots: PageSnapshot[]
@@ -17,20 +52,24 @@ export async function runAutomatedChecks(
       await page.setContent(snapshot.html, { waitUntil: 'domcontentloaded' });
 
       const axeResults = await new AxeBuilder({ page }).analyze();
-      const axeFindings: AutomatedFinding[] = axeResults.violations.map((violation, idx) => ({
-        id: `axe-${idx}-${violation.id}`,
-        wcagId: violation.tags?.find((t) => t.match(/wcag\\d{3}/i)) ?? undefined,
-        impact: violation.impact ?? undefined,
-        description: violation.description,
-        help: violation.help,
-        selector: violation.nodes[0]?.target?.[0]?.toString(),
-        snippet: violation.nodes[0]?.html,
-        tags: violation.tags
-      }));
+      const axeFindings: AutomatedFinding[] = axeResults.violations.map((violation) => {
+        const finding = {
+          wcagId: violation.tags?.find((t) => t.match(/wcag\d{3}/i)) ?? undefined,
+          impact: violation.impact ?? undefined,
+          description: violation.description,
+          help: violation.help,
+          selector: violation.nodes[0]?.target?.[0]?.toString(),
+          snippet: violation.nodes[0]?.html,
+          tags: violation.tags
+        };
+        return { id: generateStableFindingId('axe', finding), ...finding };
+      });
 
       const pa11yFindings = await runPa11y(snapshot.url);
       const combined = [...axeFindings, ...pa11yFindings];
-      findingsByUrl.set(snapshot.url, combined);
+      const deduped = deduplicateFindings(combined);
+      const sorted = sortFindings(deduped);
+      findingsByUrl.set(snapshot.url, sorted);
       await page.close();
     }
   } finally {
@@ -47,19 +86,22 @@ async function runPa11y(url: string): Promise<AutomatedFinding[]> {
       standard: 'WCAG2AA',
       log: {
         debug: () => {},
-        error: () => {}
+        error: () => {},
+        info: () => {}
       }
     });
 
-    return results.issues.map((issue: any, idx: number) => ({
-      id: `pa11y-${idx}-${issue.code}`,
-      wcagId: issue.code,
-      impact: issue.type,
-      description: issue.message,
-      help: issue.context,
-      selector: typeof issue.selector === 'string' ? issue.selector : undefined,
-      snippet: typeof issue.context === 'string' ? issue.context : undefined
-    }));
+    return results.issues.map((issue: any) => {
+      const finding = {
+        wcagId: issue.code,
+        impact: issue.type,
+        description: issue.message,
+        help: issue.context,
+        selector: typeof issue.selector === 'string' ? issue.selector : undefined,
+        snippet: typeof issue.context === 'string' ? issue.context : undefined
+      };
+      return { id: generateStableFindingId('pa11y', finding), ...finding };
+    });
   } catch (err) {
     logger.warn({ err, url }, 'pa11y failed, continuing with axe findings only');
     return [];
