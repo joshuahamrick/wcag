@@ -1,0 +1,21 @@
+{
+  "name": "ADACheck - WCAG Compliance Scanner",
+  "short_name": "ADACheck",
+  "description": "Scan your website for ADA and WCAG 2.1 accessibility issues",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

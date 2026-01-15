@@ -332,6 +332,471 @@ export const STATE_PROFILES: Record<string, StateProfile> = {
         ]
       }
     ]
+  },
+  PA: {
+    code: 'PA',
+    name: 'Pennsylvania',
+    riskMultiplier: 1.2,
+    litigationTrend: 'increasing',
+    notes: 'Pennsylvania has seen growing web accessibility litigation, particularly in Philadelphia federal courts.',
+    requirements: [
+      {
+        code: 'PA-PHRA',
+        name: 'Pennsylvania Human Relations Act',
+        description: 'Prohibits discrimination in public accommodations, interpreted to include websites.',
+        effectiveDate: '1955-01-01',
+        appliesTo: ['publicAccommodation'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Enhanced damages and injunctive relief',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Broad public accommodation definition',
+          'Applies to online businesses serving PA residents',
+          'Attorney fees recoverable'
+        ],
+        resources: [
+          'https://www.phrc.pa.gov/'
+        ]
+      }
+    ]
+  },
+  NJ: {
+    code: 'NJ',
+    name: 'New Jersey',
+    riskMultiplier: 1.4,
+    litigationTrend: 'increasing',
+    notes: 'New Jersey Law Against Discrimination provides strong protections and has active accessibility litigation.',
+    requirements: [
+      {
+        code: 'NJ-LAD',
+        name: 'New Jersey Law Against Discrimination',
+        description: 'Comprehensive civil rights law prohibiting discrimination in places of public accommodation.',
+        effectiveDate: '1945-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory and punitive damages',
+          subsequentViolation: 'Treble damages in some cases',
+          statutoryDamages: 'Potential treble damages',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'One of strongest state civil rights laws',
+          'Websites covered as public accommodations',
+          'Punitive damages available',
+          'No caps on damages'
+        ],
+        resources: [
+          'https://www.nj.gov/oag/dcr/'
+        ]
+      }
+    ]
+  },
+  MA: {
+    code: 'MA',
+    name: 'Massachusetts',
+    riskMultiplier: 1.3,
+    litigationTrend: 'stable',
+    notes: 'Massachusetts has strong disability rights protections under Chapter 272 and Chapter 151B.',
+    requirements: [
+      {
+        code: 'MA-PPA',
+        name: 'Massachusetts Public Accommodations Law (Ch. 272 §98)',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1865-01-01',
+        appliesTo: ['publicAccommodation'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Fine up to $2,500 and/or imprisonment',
+          subsequentViolation: 'Enhanced criminal penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Criminal penalties possible',
+          'Civil remedies available',
+          'Covers online services'
+        ],
+        resources: [
+          'https://www.mass.gov/orgs/massachusetts-commission-against-discrimination'
+        ]
+      }
+    ]
+  },
+  GA: {
+    code: 'GA',
+    name: 'Georgia',
+    riskMultiplier: 1.1,
+    litigationTrend: 'increasing',
+    notes: 'Georgia has moderate web accessibility litigation activity, primarily relying on federal ADA.',
+    requirements: [
+      {
+        code: 'GA-GOV',
+        name: 'Georgia Technology Authority Accessibility Standards',
+        description: 'Requires state websites to meet accessibility standards.',
+        effectiveDate: '2012-01-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Remediation required',
+          subsequentViolation: 'Budget oversight',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.0 AA compliance for state IT',
+          'Mandatory accessibility testing',
+          'Centralized oversight'
+        ],
+        resources: [
+          'https://gta.georgia.gov/'
+        ]
+      }
+    ]
+  },
+  OH: {
+    code: 'OH',
+    name: 'Ohio',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Ohio primarily relies on federal ADA with state government accessibility requirements.',
+    requirements: [
+      {
+        code: 'OH-GOV',
+        name: 'Ohio IT Standard ITS-ACC-01',
+        description: 'Establishes web accessibility standards for Ohio state agencies.',
+        effectiveDate: '2015-01-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Corrective action required',
+          subsequentViolation: 'Escalated oversight',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.0 AA mandatory for state sites',
+          'Annual accessibility assessments',
+          'DAS oversight'
+        ],
+        resources: [
+          'https://das.ohio.gov/'
+        ]
+      }
+    ]
+  },
+  MI: {
+    code: 'MI',
+    name: 'Michigan',
+    riskMultiplier: 1.1,
+    litigationTrend: 'stable',
+    notes: 'Michigan has the Elliott-Larsen Civil Rights Act providing disability protections.',
+    requirements: [
+      {
+        code: 'MI-ELCRA',
+        name: 'Elliott-Larsen Civil Rights Act',
+        description: 'Prohibits discrimination in public accommodations and services.',
+        effectiveDate: '1976-01-01',
+        appliesTo: ['publicAccommodation'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Civil damages',
+          subsequentViolation: 'Enhanced damages',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Covers places of public accommodation',
+          'Individual lawsuit rights',
+          'Civil remedies available'
+        ],
+        resources: [
+          'https://www.michigan.gov/mdcr/'
+        ]
+      }
+    ]
+  },
+  WA: {
+    code: 'WA',
+    name: 'Washington',
+    riskMultiplier: 1.2,
+    litigationTrend: 'increasing',
+    notes: 'Washington has strong disability rights protections and active technology sector.',
+    requirements: [
+      {
+        code: 'WA-LAD',
+        name: 'Washington Law Against Discrimination',
+        description: 'Comprehensive civil rights law covering public accommodations.',
+        effectiveDate: '1949-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Actual damages plus up to $10,000',
+          subsequentViolation: 'Enhanced damages',
+          statutoryDamages: 'Up to $10,000 plus actual damages',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Statutory damages up to $10,000',
+          'Covers online services',
+          'Strong enforcement'
+        ],
+        resources: [
+          'https://www.hum.wa.gov/'
+        ]
+      },
+      {
+        code: 'WA-GOV',
+        name: 'Washington State Policy #188',
+        description: 'Requires state websites to meet WCAG accessibility standards.',
+        effectiveDate: '2016-01-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Remediation required',
+          subsequentViolation: 'Budget impacts',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.1 AA standard',
+          'Accessibility coordinators required',
+          'Regular audits'
+        ],
+        resources: [
+          'https://ocio.wa.gov/policy/accessibility'
+        ]
+      }
+    ]
+  },
+  AZ: {
+    code: 'AZ',
+    name: 'Arizona',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Arizona has state government accessibility requirements but limited private sector litigation.',
+    requirements: [
+      {
+        code: 'AZ-GOV',
+        name: 'Arizona Statewide Policy P8100',
+        description: 'Mandates accessibility for state agency websites and applications.',
+        effectiveDate: '2017-01-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Remediation required',
+          subsequentViolation: 'Agency accountability measures',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.0 AA compliance',
+          'Accessibility statements required',
+          'ADOA oversight'
+        ],
+        resources: [
+          'https://azdoa.gov/'
+        ]
+      }
+    ]
+  },
+  CO: {
+    code: 'CO',
+    name: 'Colorado',
+    riskMultiplier: 1.3,
+    litigationTrend: 'increasing',
+    notes: 'Colorado recently enacted HB21-1110 with comprehensive accessibility requirements.',
+    requirements: [
+      {
+        code: 'CO-HB21',
+        name: 'Colorado HB21-1110 (Accessibility for Individuals with Disabilities)',
+        description: 'Requires state and local government websites to meet WCAG 2.1 AA standards.',
+        effectiveDate: '2024-07-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Remediation timeline required',
+          subsequentViolation: 'Oversight escalation',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.1 AA standard (newer than most states)',
+          'Applies to state and local government',
+          'Implementation timeline through 2024'
+        ],
+        resources: [
+          'https://leg.colorado.gov/'
+        ]
+      },
+      {
+        code: 'CO-CADA',
+        name: 'Colorado Anti-Discrimination Act',
+        description: 'Prohibits disability discrimination in public accommodations.',
+        effectiveDate: '1957-01-01',
+        appliesTo: ['publicAccommodation'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Civil penalties and damages',
+          subsequentViolation: 'Enhanced penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Covers places of public accommodation',
+          'Individual complaint rights',
+          'Civil Rights Division enforcement'
+        ],
+        resources: [
+          'https://ccrd.colorado.gov/'
+        ]
+      }
+    ]
+  },
+  VA: {
+    code: 'VA',
+    name: 'Virginia',
+    riskMultiplier: 1.1,
+    litigationTrend: 'stable',
+    notes: 'Virginia has state IT accessibility requirements and general disability protections.',
+    requirements: [
+      {
+        code: 'VA-GOV',
+        name: 'Virginia ITRM Standard SEC502-02',
+        description: 'Establishes accessibility standards for Virginia state agency IT.',
+        effectiveDate: '2013-01-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Corrective action required',
+          subsequentViolation: 'VITA oversight',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.0 AA compliance',
+          'VITA oversight',
+          'Procurement accessibility requirements'
+        ],
+        resources: [
+          'https://www.vita.virginia.gov/'
+        ]
+      }
+    ]
+  },
+  NC: {
+    code: 'NC',
+    name: 'North Carolina',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'North Carolina has state IT accessibility requirements through SCIO.',
+    requirements: [
+      {
+        code: 'NC-GOV',
+        name: 'North Carolina Statewide IT Accessibility',
+        description: 'Requires state agencies to meet accessibility standards.',
+        effectiveDate: '2014-01-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Remediation required',
+          subsequentViolation: 'DIT oversight',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.0 AA standard',
+          'DIT/SCIO oversight',
+          'Accessibility testing requirements'
+        ],
+        resources: [
+          'https://it.nc.gov/'
+        ]
+      }
+    ]
+  },
+  MN: {
+    code: 'MN',
+    name: 'Minnesota',
+    riskMultiplier: 1.2,
+    litigationTrend: 'stable',
+    notes: 'Minnesota Human Rights Act provides strong disability protections.',
+    requirements: [
+      {
+        code: 'MN-HRA',
+        name: 'Minnesota Human Rights Act',
+        description: 'Prohibits discrimination in public accommodations and services.',
+        effectiveDate: '1967-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Enhanced damages and civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Broad disability protections',
+          'Covers public accommodations',
+          'Strong enforcement'
+        ],
+        resources: [
+          'https://mn.gov/mdhr/'
+        ]
+      }
+    ]
+  },
+  CT: {
+    code: 'CT',
+    name: 'Connecticut',
+    riskMultiplier: 1.3,
+    litigationTrend: 'increasing',
+    notes: 'Connecticut has proactive accessibility legislation and strong civil rights protections.',
+    requirements: [
+      {
+        code: 'CT-PA',
+        name: 'Connecticut Public Act 17-99',
+        description: 'Requires state agency websites to conform to WCAG 2.0 Level AA.',
+        effectiveDate: '2017-10-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Remediation required',
+          subsequentViolation: 'Oversight escalation',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'WCAG 2.0 AA mandatory',
+          'Annual accessibility audits',
+          'Accessibility coordinator required'
+        ],
+        resources: [
+          'https://portal.ct.gov/DAS/CTEdTech/Commission-for-Educational-Technology'
+        ]
+      }
+    ]
   }
 };
 
