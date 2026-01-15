@@ -797,6 +797,969 @@ export const STATE_PROFILES: Record<string, StateProfile> = {
         ]
       }
     ]
+  },
+  AL: {
+    code: 'AL',
+    name: 'Alabama',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Alabama follows federal ADA standards with limited state-specific requirements.',
+    requirements: [
+      {
+        code: 'AL-ADA',
+        name: 'Alabama ADA Compliance',
+        description: 'Follows federal ADA Title III requirements for public accommodations.',
+        effectiveDate: '1992-01-26',
+        appliesTo: ['publicAccommodation', 'government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Federal remedies apply',
+          subsequentViolation: 'Injunctive relief and damages',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Federal ADA compliance required',
+          'State agencies must be accessible'
+        ],
+        resources: [
+          'https://www.ada.gov/'
+        ]
+      }
+    ]
+  },
+  AK: {
+    code: 'AK',
+    name: 'Alaska',
+    riskMultiplier: 0.8,
+    litigationTrend: 'stable',
+    notes: 'Alaska has minimal state-specific web accessibility requirements beyond federal ADA.',
+    requirements: [
+      {
+        code: 'AK-HRC',
+        name: 'Alaska Human Rights Law',
+        description: 'Prohibits discrimination in public accommodations including digital services.',
+        effectiveDate: '1965-01-01',
+        appliesTo: ['publicAccommodation'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Cease and desist order',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: false
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Reasonable accommodations required'
+        ],
+        resources: [
+          'https://humanrights.alaska.gov/'
+        ]
+      }
+    ]
+  },
+  AR: {
+    code: 'AR',
+    name: 'Arkansas',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Arkansas requires state agency websites to meet accessibility standards.',
+    requirements: [
+      {
+        code: 'AR-DFA',
+        name: 'Arkansas IT Accessibility',
+        description: 'State agencies must ensure IT accessibility for people with disabilities.',
+        effectiveDate: '2010-01-01',
+        appliesTo: ['government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Remediation required',
+          subsequentViolation: 'Administrative action',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'State IT accessibility policy',
+          'WCAG compliance for government sites'
+        ],
+        resources: [
+          'https://www.dfa.arkansas.gov/'
+        ]
+      }
+    ]
+  },
+  DE: {
+    code: 'DE',
+    name: 'Delaware',
+    riskMultiplier: 1.1,
+    litigationTrend: 'increasing',
+    notes: 'Delaware has strong civil rights protections and corporation-friendly courts attract litigation.',
+    requirements: [
+      {
+        code: 'DE-DDA',
+        name: 'Delaware Discrimination Act',
+        description: 'Comprehensive civil rights law covering disability discrimination.',
+        effectiveDate: '1986-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Enhanced penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Covers places of public accommodation',
+          'Attorneys fees available'
+        ],
+        resources: [
+          'https://dhr.delaware.gov/'
+        ]
+      }
+    ]
+  },
+  HI: {
+    code: 'HI',
+    name: 'Hawaii',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Hawaii has progressive disability rights laws with moderate enforcement.',
+    requirements: [
+      {
+        code: 'HI-DCRA',
+        name: 'Hawaii Civil Rights Act',
+        description: 'Prohibits discrimination based on disability in public accommodations.',
+        effectiveDate: '1989-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Civil penalties up to $10,000',
+          subsequentViolation: 'Enhanced penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Broad disability protections',
+          'Public accommodation access required'
+        ],
+        resources: [
+          'https://labor.hawaii.gov/hcrc/'
+        ]
+      }
+    ]
+  },
+  ID: {
+    code: 'ID',
+    name: 'Idaho',
+    riskMultiplier: 0.8,
+    litigationTrend: 'stable',
+    notes: 'Idaho has limited state-specific accessibility requirements.',
+    requirements: [
+      {
+        code: 'ID-HRA',
+        name: 'Idaho Human Rights Act',
+        description: 'Prohibits discrimination including on basis of disability.',
+        effectiveDate: '1969-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Cease and desist',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: false
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://humanrights.idaho.gov/'
+        ]
+      }
+    ]
+  },
+  IN: {
+    code: 'IN',
+    name: 'Indiana',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Indiana follows federal standards with state civil rights protections.',
+    requirements: [
+      {
+        code: 'IN-CRL',
+        name: 'Indiana Civil Rights Law',
+        description: 'Prohibits discrimination in public accommodations based on disability.',
+        effectiveDate: '1971-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation accessibility',
+          'Disability discrimination prohibited'
+        ],
+        resources: [
+          'https://www.in.gov/icrc/'
+        ]
+      }
+    ]
+  },
+  IA: {
+    code: 'IA',
+    name: 'Iowa',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Iowa has civil rights protections with moderate enforcement activity.',
+    requirements: [
+      {
+        code: 'IA-CRA',
+        name: 'Iowa Civil Rights Act',
+        description: 'Comprehensive civil rights law covering disability discrimination.',
+        effectiveDate: '1965-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Enhanced penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Broad civil rights protections',
+          'Administrative enforcement available'
+        ],
+        resources: [
+          'https://icrc.iowa.gov/'
+        ]
+      }
+    ]
+  },
+  KS: {
+    code: 'KS',
+    name: 'Kansas',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Kansas has state accessibility requirements for government entities.',
+    requirements: [
+      {
+        code: 'KS-KADA',
+        name: 'Kansas Acts Against Discrimination',
+        description: 'Prohibits discrimination in public accommodations based on disability.',
+        effectiveDate: '1961-01-01',
+        appliesTo: ['publicAccommodation', 'all', 'government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Cease and desist',
+          subsequentViolation: 'Civil penalties up to $10,000',
+          attorneyFees: false
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://www.khrc.net/'
+        ]
+      }
+    ]
+  },
+  KY: {
+    code: 'KY',
+    name: 'Kentucky',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Kentucky has civil rights protections aligned with federal ADA.',
+    requirements: [
+      {
+        code: 'KY-CRA',
+        name: 'Kentucky Civil Rights Act',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1966-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Enhanced penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation access required',
+          'Administrative and judicial remedies'
+        ],
+        resources: [
+          'https://kchr.ky.gov/'
+        ]
+      }
+    ]
+  },
+  LA: {
+    code: 'LA',
+    name: 'Louisiana',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Louisiana has disability rights laws with moderate enforcement.',
+    requirements: [
+      {
+        code: 'LA-RSHAD',
+        name: 'Louisiana Rights of Persons with Disabilities',
+        description: 'Protects rights of individuals with disabilities in public accommodations.',
+        effectiveDate: '1984-01-01',
+        appliesTo: ['publicAccommodation'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Actual damages',
+          subsequentViolation: 'Treble damages possible',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Right to full participation',
+          'Discrimination prohibited'
+        ],
+        resources: [
+          'https://gov.louisiana.gov/page/disability-affairs'
+        ]
+      }
+    ]
+  },
+  ME: {
+    code: 'ME',
+    name: 'Maine',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Maine has strong human rights protections including disability discrimination.',
+    requirements: [
+      {
+        code: 'ME-HRA',
+        name: 'Maine Human Rights Act',
+        description: 'Comprehensive civil rights law prohibiting disability discrimination.',
+        effectiveDate: '1972-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Broad disability protections',
+          'Public accommodation access required'
+        ],
+        resources: [
+          'https://www.maine.gov/mhrc/'
+        ]
+      }
+    ]
+  },
+  MS: {
+    code: 'MS',
+    name: 'Mississippi',
+    riskMultiplier: 0.8,
+    litigationTrend: 'stable',
+    notes: 'Mississippi has limited state-specific accessibility enforcement.',
+    requirements: [
+      {
+        code: 'MS-ADA',
+        name: 'Mississippi ADA Compliance',
+        description: 'Follows federal ADA requirements for public accommodations.',
+        effectiveDate: '1992-01-26',
+        appliesTo: ['publicAccommodation', 'government'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Federal remedies',
+          subsequentViolation: 'Injunctive relief',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Federal ADA compliance',
+          'State agency accessibility'
+        ],
+        resources: [
+          'https://www.ada.gov/'
+        ]
+      }
+    ]
+  },
+  MO: {
+    code: 'MO',
+    name: 'Missouri',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Missouri has human rights protections covering disability discrimination.',
+    requirements: [
+      {
+        code: 'MO-HRA',
+        name: 'Missouri Human Rights Act',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1986-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Actual damages',
+          subsequentViolation: 'Punitive damages possible',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Administrative complaint process'
+        ],
+        resources: [
+          'https://labor.mo.gov/mohumanrights'
+        ]
+      }
+    ]
+  },
+  MT: {
+    code: 'MT',
+    name: 'Montana',
+    riskMultiplier: 0.8,
+    litigationTrend: 'stable',
+    notes: 'Montana has human rights protections with limited accessibility litigation.',
+    requirements: [
+      {
+        code: 'MT-HRA',
+        name: 'Montana Human Rights Act',
+        description: 'Prohibits discrimination based on disability in public accommodations.',
+        effectiveDate: '1974-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability protections',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://erd.dli.mt.gov/human-rights'
+        ]
+      }
+    ]
+  },
+  NE: {
+    code: 'NE',
+    name: 'Nebraska',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Nebraska has civil rights protections including disability discrimination.',
+    requirements: [
+      {
+        code: 'NE-FEPA',
+        name: 'Nebraska Fair Employment Practice Act',
+        description: 'Prohibits discrimination in public accommodations.',
+        effectiveDate: '1965-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Cease and desist',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: false
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation access',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://neoc.nebraska.gov/'
+        ]
+      }
+    ]
+  },
+  NV: {
+    code: 'NV',
+    name: 'Nevada',
+    riskMultiplier: 1.1,
+    litigationTrend: 'increasing',
+    notes: 'Nevada has strong consumer protection laws and tourism industry scrutiny.',
+    requirements: [
+      {
+        code: 'NV-ERD',
+        name: 'Nevada Equal Rights',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1965-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Punitive damages possible',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Full and equal access required',
+          'Strong tourism industry focus'
+        ],
+        resources: [
+          'https://detr.nv.gov/Page/Nevada_Equal_Rights_Commission'
+        ]
+      }
+    ]
+  },
+  NH: {
+    code: 'NH',
+    name: 'New Hampshire',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'New Hampshire has comprehensive human rights protections.',
+    requirements: [
+      {
+        code: 'NH-LAD',
+        name: 'New Hampshire Law Against Discrimination',
+        description: 'Prohibits discrimination in public accommodations based on disability.',
+        effectiveDate: '1992-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Commission and court enforcement'
+        ],
+        resources: [
+          'https://www.nh.gov/hrc/'
+        ]
+      }
+    ]
+  },
+  NM: {
+    code: 'NM',
+    name: 'New Mexico',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'New Mexico has human rights protections covering disability discrimination.',
+    requirements: [
+      {
+        code: 'NM-HRA',
+        name: 'New Mexico Human Rights Act',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1969-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Enhanced remedies',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Broad disability protections',
+          'Administrative enforcement'
+        ],
+        resources: [
+          'https://www.dws.state.nm.us/Human-Rights'
+        ]
+      }
+    ]
+  },
+  ND: {
+    code: 'ND',
+    name: 'North Dakota',
+    riskMultiplier: 0.8,
+    litigationTrend: 'stable',
+    notes: 'North Dakota has limited accessibility litigation activity.',
+    requirements: [
+      {
+        code: 'ND-HRA',
+        name: 'North Dakota Human Rights Act',
+        description: 'Prohibits discrimination based on disability.',
+        effectiveDate: '1983-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: false
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Department of Labor enforcement'
+        ],
+        resources: [
+          'https://www.nd.gov/labor/human-rights'
+        ]
+      }
+    ]
+  },
+  OK: {
+    code: 'OK',
+    name: 'Oklahoma',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Oklahoma has disability rights protections with moderate enforcement.',
+    requirements: [
+      {
+        code: 'OK-OADA',
+        name: 'Oklahoma Anti-Discrimination Act',
+        description: 'Prohibits discrimination in public accommodations.',
+        effectiveDate: '1968-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Actual damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation accessibility',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://www.ok.gov/ohrc/'
+        ]
+      }
+    ]
+  },
+  OR: {
+    code: 'OR',
+    name: 'Oregon',
+    riskMultiplier: 1.2,
+    litigationTrend: 'increasing',
+    notes: 'Oregon has progressive disability rights laws and active enforcement.',
+    requirements: [
+      {
+        code: 'OR-ORS659A',
+        name: 'Oregon Civil Rights Laws',
+        description: 'Comprehensive civil rights protections including disability discrimination.',
+        effectiveDate: '1973-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages up to $200,000',
+          subsequentViolation: 'Enhanced penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: true,
+        keyProvisions: [
+          'Broad civil rights protections',
+          'Strong administrative enforcement',
+          'Substantial damage awards'
+        ],
+        resources: [
+          'https://www.oregon.gov/boli/civil-rights/'
+        ]
+      }
+    ]
+  },
+  RI: {
+    code: 'RI',
+    name: 'Rhode Island',
+    riskMultiplier: 1.1,
+    litigationTrend: 'stable',
+    notes: 'Rhode Island has comprehensive civil rights protections.',
+    requirements: [
+      {
+        code: 'RI-FEPA',
+        name: 'Rhode Island Fair Employment Practices Act',
+        description: 'Prohibits discrimination in public accommodations.',
+        effectiveDate: '1949-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Disability discrimination prohibited',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://richr.ri.gov/'
+        ]
+      }
+    ]
+  },
+  SC: {
+    code: 'SC',
+    name: 'South Carolina',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'South Carolina has human affairs law covering disability discrimination.',
+    requirements: [
+      {
+        code: 'SC-HAL',
+        name: 'South Carolina Human Affairs Law',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1972-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation access',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://schac.sc.gov/'
+        ]
+      }
+    ]
+  },
+  SD: {
+    code: 'SD',
+    name: 'South Dakota',
+    riskMultiplier: 0.8,
+    litigationTrend: 'stable',
+    notes: 'South Dakota has limited state-specific accessibility requirements.',
+    requirements: [
+      {
+        code: 'SD-HRA',
+        name: 'South Dakota Human Relations Act',
+        description: 'Prohibits discrimination in public accommodations.',
+        effectiveDate: '1972-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Cease and desist',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: false
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Discrimination prohibited',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://dlr.sd.gov/human_rights/'
+        ]
+      }
+    ]
+  },
+  TN: {
+    code: 'TN',
+    name: 'Tennessee',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Tennessee has disability rights protections with moderate enforcement.',
+    requirements: [
+      {
+        code: 'TN-HRA',
+        name: 'Tennessee Human Rights Act',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1978-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation access required',
+          'Commission and court remedies'
+        ],
+        resources: [
+          'https://www.tn.gov/humanrights.html'
+        ]
+      }
+    ]
+  },
+  UT: {
+    code: 'UT',
+    name: 'Utah',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'Utah has antidiscrimination laws covering disability.',
+    requirements: [
+      {
+        code: 'UT-AAA',
+        name: 'Utah Antidiscrimination Act',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1965-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: false
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation accessibility',
+          'Division enforcement'
+        ],
+        resources: [
+          'https://laborcommission.utah.gov/divisions/antidiscrimination-and-labor-uald/'
+        ]
+      }
+    ]
+  },
+  VT: {
+    code: 'VT',
+    name: 'Vermont',
+    riskMultiplier: 1.0,
+    litigationTrend: 'stable',
+    notes: 'Vermont has progressive civil rights protections.',
+    requirements: [
+      {
+        code: 'VT-FEPA',
+        name: 'Vermont Fair Employment Practices Act',
+        description: 'Prohibits discrimination in public accommodations based on disability.',
+        effectiveDate: '1963-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Enhanced penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Broad disability protections',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://hrc.vermont.gov/'
+        ]
+      }
+    ]
+  },
+  WV: {
+    code: 'WV',
+    name: 'West Virginia',
+    riskMultiplier: 0.9,
+    litigationTrend: 'stable',
+    notes: 'West Virginia has human rights protections covering disability.',
+    requirements: [
+      {
+        code: 'WV-HRA',
+        name: 'West Virginia Human Rights Act',
+        description: 'Prohibits discrimination in places of public accommodation.',
+        effectiveDate: '1967-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Public accommodation access',
+          'Commission enforcement'
+        ],
+        resources: [
+          'https://hrc.wv.gov/'
+        ]
+      }
+    ]
+  },
+  WI: {
+    code: 'WI',
+    name: 'Wisconsin',
+    riskMultiplier: 1.1,
+    litigationTrend: 'stable',
+    notes: 'Wisconsin has comprehensive civil rights protections with active enforcement.',
+    requirements: [
+      {
+        code: 'WI-WFEA',
+        name: 'Wisconsin Fair Employment Act',
+        description: 'Prohibits discrimination in public accommodations based on disability.',
+        effectiveDate: '1965-01-01',
+        appliesTo: ['publicAccommodation', 'all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Compensatory damages',
+          subsequentViolation: 'Civil penalties up to $10,000',
+          attorneyFees: true
+        },
+        privateRightOfAction: true,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Broad disability protections',
+          'Strong administrative enforcement'
+        ],
+        resources: [
+          'https://dwd.wisconsin.gov/er/'
+        ]
+      }
+    ]
+  },
+  WY: {
+    code: 'WY',
+    name: 'Wyoming',
+    riskMultiplier: 0.7,
+    litigationTrend: 'stable',
+    notes: 'Wyoming has minimal state-specific accessibility requirements.',
+    requirements: [
+      {
+        code: 'WY-FEPA',
+        name: 'Wyoming Fair Employment Practices Act',
+        description: 'Prohibits discrimination based on disability.',
+        effectiveDate: '1965-01-01',
+        appliesTo: ['all'],
+        wcagLevel: 'AA',
+        penalties: {
+          firstViolation: 'Cease and desist',
+          subsequentViolation: 'Administrative action',
+          attorneyFees: false
+        },
+        privateRightOfAction: false,
+        demandLetterCommon: false,
+        keyProvisions: [
+          'Employment discrimination prohibited',
+          'Department of Workforce Services enforcement'
+        ],
+        resources: [
+          'https://dws.wyo.gov/'
+        ]
+      }
+    ]
   }
 };
 
