@@ -9,10 +9,25 @@ import { Badge } from "@/components/ui/badge";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    message: ""
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, this would send to an API
+
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`ADACheck Contact: ${formData.name}${formData.company ? ` from ${formData.company}` : ""}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || "N/A"}\n\nMessage:\n${formData.message}`
+    );
+
+    // Open email client
+    window.location.href = `mailto:support@adacheck.io?subject=${subject}&body=${body}`;
+
     setSubmitted(true);
   };
 
@@ -51,16 +66,22 @@ export default function ContactPage() {
                     label="Name"
                     placeholder="Your name"
                     required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                   <Input
                     label="Email"
                     type="email"
                     placeholder="you@example.com"
                     required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
                   <Input
                     label="Company"
                     placeholder="Your company (optional)"
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   />
                   <div>
                     <label className="block text-sm font-medium text-slate-300 mb-1.5">
@@ -70,12 +91,17 @@ export default function ContactPage() {
                       rows={4}
                       placeholder="How can we help?"
                       required
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     />
                   </div>
                   <Button type="submit" className="w-full">
                     Send Message
                   </Button>
+                  <p className="text-xs text-slate-500 text-center">
+                    This will open your email client to send the message.
+                  </p>
                 </form>
               )}
             </CardContent>

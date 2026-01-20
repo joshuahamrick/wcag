@@ -26,9 +26,10 @@ const plans = [
       "5 scans per month",
       "No AI recommendations",
     ],
-    cta: "Start Free",
+    cta: "Start Scanning",
     href: "/scan",
     popular: false,
+    badge: null,
   },
   {
     name: "Pro",
@@ -46,9 +47,10 @@ const plans = [
       "Risk scoring",
     ],
     limitations: [],
-    cta: "Start Pro Trial",
-    href: "/scan?plan=pro",
+    cta: "Start Free (Beta)",
+    href: "/scan",
     popular: true,
+    badge: "Free During Beta",
   },
   {
     name: "Enterprise",
@@ -67,9 +69,10 @@ const plans = [
       "On-premise option",
     ],
     limitations: [],
-    cta: "Contact Sales",
+    cta: "Contact Us",
     href: "/contact",
     popular: false,
+    badge: null,
   },
 ];
 
@@ -87,6 +90,17 @@ export default function PricingPage() {
             Start free and upgrade as your accessibility needs grow.
             No hidden fees, no surprises.
           </p>
+
+          {/* Beta Notice */}
+          <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-900/30 border border-emerald-700/50">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="text-emerald-400 text-sm font-medium">
+              Beta: All Pro features are currently free while we finalize our platform
+            </span>
+          </div>
         </div>
 
         {/* Pricing Cards */}
